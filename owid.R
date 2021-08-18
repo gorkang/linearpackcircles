@@ -17,8 +17,9 @@ lapply(list.files("./R", full.names = TRUE, pattern = ".R"), source)
 # Parameters --------------------------------------------------------------
 
 set.seed(12)
-height_y = 2
+
 ratio_reduction_x = 10000
+height_y = 2
 size_text = 3
 
 
@@ -34,14 +35,14 @@ ALL_data =
   drop_na() %>% 
   mutate(area = (total_deaths_per_million)/ratio_reduction_x,
          x = (total_cases_per_million)/ratio_reduction_x,
-         y = runif(n(), 1, height_y)) %>% 
+         y = runif(n(), 0, height_y)) %>% 
   select(x, y, area, location, continent, total_cases_per_million)  
 
 
 # Create polygons ---------------------------------------------------------
 
-DF1 = create_polygons(ALL_data %>% filter(continent == "Asia")) %>% mutate(XX = "Asia")
-DF2 = create_polygons(ALL_data %>% filter(continent == "Europe")) %>% mutate(XX = "Europe")
+DF1 = create_polygons(ALL_data %>% filter(continent == "Asia"))
+DF2 = create_polygons(ALL_data %>% filter(continent == "Europe"))
 
 # Position of text labels
 label_positions1 = DF1 %>% group_by(id)  %>% filter(y == max(y)) %>% filter(x == median(x))%>% sample_n(1)
@@ -62,6 +63,8 @@ plot2 = create_plot(DF2, label_positions2) + labs(x = "Cases per million", capti
 
 
 # https://stackoverflow.com/questions/60172472/plotting-ggplot2-geom-polygon-on-discrete-x-axis
+# See option 2: https://stackoverflow.com/a/60173018/1873521 
+
 final_plot = plot1 / plot2
 final_plot
 
