@@ -3,6 +3,8 @@
 # TODO: generalizar para cualquier tipo de datos! 
 
   # Ahora, por ejemplo, si se usa casos por millon para el area, se va al chancho
+    # Habra que normalizar el area tb?
+
   # mutate(area = (total_cases_per_million)/ratio_reduction_x,
   #        x = (total_deaths_per_million)/ratio_reduction_x,
   #        y = runif(n(), 0, height_y)) %>% 
@@ -59,6 +61,11 @@ DF_CONTINENTS = ALL_data %>% distinct(continent)
 
 DF1 = 1:nrow(DF_CONTINENTS) %>% 
   map_df(~ create_polygons(ALL_data %>% filter(continent == DF_CONTINENTS$continent[.x])))
+
+
+# CHECKS -------------------------------------------------------------------
+
+check_diffs(ALL_data, DF1 %>% filter(continent == "Asia"))
 
 
 # Separate by factor ------------------------------------------------------
