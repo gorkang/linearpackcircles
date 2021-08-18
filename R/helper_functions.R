@@ -79,7 +79,7 @@ create_plot <- function(DF, label_circles = FALSE) {
   mean_Y = DF %>% group_by(continent) %>% summarise(XXX = median(y)) %>% arrange(XXX)
   
   # Position of text labels
-  label_positions = DF %>% group_by(id)  %>% filter(y == max(y)) %>% filter(x == median(x))%>% sample_n(1)
+  label_positions = DF %>% group_by(id)  %>% filter(y == max(y)) %>% filter(x == median(x)) %>% sample_n(1)
   
   
   plot1 = 
@@ -103,7 +103,7 @@ create_plot <- function(DF, label_circles = FALSE) {
         # nudge_x = .1, nudge_y = .5,
         alpha = .5,
         data = label_positions, 
-        aes(label = paste0(location, ": ", round(total_cases_per_million,0) %>% scales::comma())), size = size_text
+        aes(label = paste0(location, ": ", round(x * ratio_reduction_x,0) %>% scales::comma())), size = size_text #total_cases_per_million
       ) 
   } else {
     plot1
