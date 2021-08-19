@@ -1,4 +1,4 @@
-prepare_data <- function(DF, ID_var, group_var, area_var, x_var) {
+prepare_data <- function(DF, ID_var, group_var, area_var, x_var, ratio_reduction_area, ratio_reduction_x, height_y) {
   
   # DEBUG
   # DF = DF
@@ -54,14 +54,16 @@ create_polygons <- function(DF, group_var) {
 
 
 
-check_diffs <- function(ALL_data, DF, check_var) {
+check_diffs <- function(ALL_data, DF, check_var, group_var) {
   
   # DEBUG
-  # DF = DF1
-  # check_var = "total_deaths_per_million"
+  # ALL_data = ALL_data
+  # DF = DF_polygons %>% filter(get(group_var_str) == DF_groups$group_var[4])
+  # check_var = x_var_str
+  # group_var = group_var_str
   
   # Extract continent
-  continent_str = DF %>% distinct(continent) %>% pull(continent)
+  group_str = DF %>% distinct(!!group_var_str := get(group_var_str)) %>% pull(group_var_str)
   
   DFCHECK = 
     DF %>% group_by(location) %>% sample_n(1) %>% arrange(x) %>% ungroup() %>% 
@@ -70,7 +72,11 @@ check_diffs <- function(ALL_data, DF, check_var) {
     select(position_check, x_check, location, total_x_plot)
   
   DF_output = 
-    ALL_data %>% filter(continent == continent_str) %>% 
+    ALL_data %>% 
+    
+    # TODO: SHOULD make sure we are using circles in the same group / level when checking
+    filter(continent %in% group_str) %>% 
+    
     arrange(x) %>% ungroup() %>% mutate(position_x = 1:n()) %>% # arrange() needed to assign position_x
     select(x, location, continent, position_x, eval(check_var)) %>% 
     left_join(DFCHECK, by = "location") %>%
@@ -106,13 +112,23 @@ mult_format <- function() {
 }
 
 
-create_plot <- function(DF, label_circles = FALSE, max_overlaps = 5) {
+create_plot <- function(DF, label_circles = FALSE, max_overlaps = 5, group_var_str, separation_factor = 5) {
   
-  # DF = DFX
+  # DF = DF_polygons
   # label_circles = TRUE
   
+  # Separate circles by group_var_str ---------------------------------------
+
+  # Moves the circles in the y axis to separate by group_var_str
+  DF_factors = DF %>% distinct(!!group_var_str := get(group_var_str)) %>% mutate(ID = (1:n()) * separation_factor)
+  
+  # Modifies the DF to separate circles
+  DF = DF %>% left_join(DF_factors, by = group_var_str) %>% mutate(y = y + ID)
+  
+  
+  
   # Position for y axis labels (group_var)
-  position_y = DF %>% group_by(continent) %>% summarise(positions = median(y)) %>% arrange(positions)
+  position_y = DF %>% group_by(!!group_var_str := get(group_var_str)) %>% summarise(positions = median(y)) %>% arrange(positions)
   
   # Position of circle labels
   label_positions = DF %>% group_by(id)  %>% filter(y == median(y)) %>% filter(x == median(x)) %>% sample_n(1)
@@ -126,7 +142,7 @@ create_plot <- function(DF, label_circles = FALSE, max_overlaps = 5) {
     theme_minimal(base_size = 16) +
     scale_x_continuous(labels = mult_format(), n.breaks = 10, expand = expansion(mult = c(.02, .01)))  +
     theme(plot.background = element_rect(fill = 'white', colour = 'white')) +
-    scale_y_continuous(breaks = unique(position_y$positions), labels = unique(DF$continent))
+    scale_y_continuous(breaks = unique(position_y$positions), labels = DF_factors[,1])
   
   # If including labels for circles
   if (label_circles) {

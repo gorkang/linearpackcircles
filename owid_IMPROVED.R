@@ -1,5 +1,6 @@
 # Creates a packing circles visualization for COVID OWID data
 
+# TODO: parametrize check_diffs()
 
 # Libraries ---------------------------------------------------------------
 
@@ -16,23 +17,23 @@ invisible(lapply(list.files("./R", full.names = TRUE, pattern = ".R"), source))
 # Parameters --------------------------------------------------------------
 
 set.seed(12)
+
 separation_factor = 10 # Separation between group_var_str levels
 
 ratio_reduction_area = 60000
 ratio_reduction_x = 50
 
-height_y = 5
+height_y = 5 # How much space for each group in the y axis to move around the circles
 
-# If using labels, how many max overlaps to tolerate
-max_overlaps = 8
+max_overlaps = 8 # If using labels, how many max overlaps to tolerate
 
-
+# Main variables names
 ID_var_str = "location"
 group_var_str = "continent"
 area_var_str = "total_cases_per_million"
 x_var_str = "total_deaths_per_million"
 
-
+# Plot parameters
 title_str = "COVID deaths per million"
 subtitle_str = NULL
 x_str = "Deaths per million"
@@ -55,36 +56,30 @@ size_text = 3
 
 DF = read_csv("data/owid-covid-data.csv", show_col_types = FALSE)
 
-ALL_data = prepare_data(DF %>% filter(date == max(date)),
+ALL_data = prepare_data(DF %>% filter(date == max(date)), # Use only more recent data
              ID_var = ID_var_str,
              group_var = group_var_str,
              area_var = area_var_str,
-             x_var = x_var_str)
+             x_var = x_var_str,
+             ratio_reduction_area = ratio_reduction_area, 
+             ratio_reduction_x = ratio_reduction_x, 
+             height_y = height_y)
 
 
 
 # Create polygons ---------------------------------------------------------
 
-DF_CONTINENTS = ALL_data %>% distinct(continent)# %>% head(1)
+# We create polygons for each level of group_var_str
+DF_groups = ALL_data %>% distinct(group_var = get(group_var_str))# %>% head(1)
 
-DF1 = 
-  1:nrow(DF_CONTINENTS) %>% 
-  map_df(~ create_polygons(ALL_data %>% filter(continent == DF_CONTINENTS$continent[.x]), group_var = "continent"))
-
-
-
-# Separate by factor ------------------------------------------------------
-
-# 
-DF_factors = DF1 %>% distinct(continent) %>% mutate(ID = (1:n()) * separation_factor)
-
-DFX = DF1 %>% left_join(DF_factors, by = group_var_str) %>% mutate(y = y + ID)
+DF_polygons = 1:nrow(DF_groups) %>% 
+  map_df(~ create_polygons(ALL_data %>% filter(get(group_var_str) == DF_groups$group_var[.x]), group_var = group_var_str))
 
 
 
 # Plot --------------------------------------------------------------------
 
-plot_final = create_plot(DFX, label_circles = TRUE, max_overlaps = max_overlaps)
+plot_final = create_plot(DF_polygons, label_circles = TRUE, max_overlaps = max_overlaps, group_var_str = group_var_str, separation_factor = separation_factor)
 
 final_plot = plot_final +
   labs(title = title_str,
@@ -99,4 +94,6 @@ ggsave("outputs/final_plot_improved.png", final_plot, width = 20, height = 11, d
 
 # CHECKS -------------------------------------------------------------------
 
-# check_diffs(ALL_data, DF1 %>% filter(continent == DF_CONTINENTS$continent[4]), check_var = x_var_str)
+# Why these are different?
+# check_diffs(ALL_data, DF_plot %>% filter(get(group_var_str) == DF_groups$group_var[4]), check_var = x_var_str)
+check_diffs(ALL_data, DF_polygons %>% filter(get(group_var_str) == DF_groups$group_var[4]), check_var = x_var_str, group_var = group_var_str)
