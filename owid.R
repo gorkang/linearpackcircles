@@ -91,7 +91,7 @@ final_plot = plot_final +
 
 final_plot
 
-ggsave("outputs/final_plot_improved.png", final_plot, width = 20, height = 11, dpi = 300)
+ggsave("outputs/final_plot.png", final_plot, width = 20, height = 11, dpi = 300)
 
 
 
