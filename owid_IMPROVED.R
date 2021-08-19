@@ -1,6 +1,8 @@
 # Creates a packing circles visualization for COVID OWID data
 
 # TODO: parametrize check_diffs()
+# TODO: homogenize parameters of functions (e.g. group_var, group_var_str). Eliminate all "_str"?
+
 
 # Libraries ---------------------------------------------------------------
 
@@ -79,7 +81,7 @@ DF_polygons = 1:nrow(DF_groups) %>%
 
 # Plot --------------------------------------------------------------------
 
-plot_final = create_plot(DF_polygons, label_circles = TRUE, max_overlaps = max_overlaps, group_var_str = group_var_str, separation_factor = separation_factor)
+plot_final = create_plot(DF_polygons, label_circles = TRUE, max_overlaps = max_overlaps, ID_var_str = ID_var_str, group_var_str = group_var_str, separation_factor = separation_factor)
 
 final_plot = plot_final +
   labs(title = title_str,
@@ -92,8 +94,16 @@ final_plot
 ggsave("outputs/final_plot_improved.png", final_plot, width = 20, height = 11, dpi = 300)
 
 
+
 # CHECKS -------------------------------------------------------------------
 
-# Why these are different?
-# check_diffs(ALL_data, DF_plot %>% filter(get(group_var_str) == DF_groups$group_var[4]), check_var = x_var_str)
+# Overlaps
+list_overlaps = 1:nrow(DF_groups) %>% map(~ check_overlaps(DF_polygons%>% filter(get(group_var_str) == DF_groups$group_var[.x]), create_plot = TRUE))
+  
+  # Extract DF and plots         
+  DF_overlaps = 1:length(list_overlaps) %>% map_df(~list_overlaps[[.x]]$DF_overlaps)
+  plots_overlaps = 1:length(list_overlaps) %>% map(~list_overlaps[[.x]]$plot_overlaps)
+
+
+# Differences in initial location and plot locacion
 check_diffs(ALL_data, DF_polygons %>% filter(get(group_var_str) == DF_groups$group_var[4]), check_var = x_var_str, group_var = group_var_str)

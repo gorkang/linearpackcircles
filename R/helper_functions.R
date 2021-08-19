@@ -112,10 +112,14 @@ mult_format <- function() {
 }
 
 
-create_plot <- function(DF, label_circles = FALSE, max_overlaps = 5, group_var_str, separation_factor = 5) {
-  
+create_plot <- function(DF, label_circles = FALSE, max_overlaps = 5, ID_var_str, group_var_str, separation_factor = 5) {
+
+  # DEBUG  
   # DF = DF_polygons
   # label_circles = TRUE
+  # max_overlaps = 5
+  # group_var_str = group_var_str 
+  # separation_factor = 5
   
   # Separate circles by group_var_str ---------------------------------------
 
@@ -157,7 +161,7 @@ create_plot <- function(DF, label_circles = FALSE, max_overlaps = 5, group_var_s
         # nudge_x = .1, nudge_y = .5,
         alpha = .5,
         data = label_positions, 
-        aes(label = paste0(location#, ": ", 
+        aes(label = paste0(get(ID_var_str)#, ": ", 
                            # round(x * ratio_reduction_x, 0) %>% scales::comma(accuracy = 1), " | ",
                            # round(total_deaths_per_million, 0) %>% scales::comma(accuracy = 1)
                            ))
@@ -165,4 +169,56 @@ create_plot <- function(DF, label_circles = FALSE, max_overlaps = 5, group_var_s
   } else {
     plot1
   }
+}
+
+
+
+
+
+
+
+check_overlaps <- function(DF_polygons, create_plot = FALSE) {
+  
+  library(sf)
+  
+  shape_areas <- DF_polygons %>% 
+    st_as_sf(coords = c("x", "y")) %>%
+    group_by(id) %>%
+    summarise(do_union = F) %>%
+    st_cast("POLYGON") %>%
+    # st_cast("MULTIPOLYGON") %>%
+    mutate(area = st_area(geometry)) %>% 
+    mutate(id = as.factor(id)) 
+  
+  intersect_pct <- 
+    st_intersection(shape_areas) %>% 
+    mutate(intersect_area = st_area(.))  # create new column with shape area
+  # dplyr::select(id, area, intersect_area, n.overlaps) %>%     # only select columns needed to merge
+  # st_drop_geometry()
+  
+  
+  # Outputs -----------------------------------------------------------------
+  
+  DF_overlaps = intersect_pct %>% filter(n.overlaps > 1) %>% 
+    dplyr::select(id, area, intersect_area, n.overlaps) %>%  # only select columns needed to merge
+    st_drop_geometry()
+  
+  if (create_plot == TRUE & nrow(DF_overlaps) > 0) {
+    
+    plot_overlaps = intersect_pct %>% 
+      mutate(n.overlaps = as.factor(n.overlaps)) %>% 
+      # filter(n.overlaps > 1) +
+      ggplot() + 
+      geom_sf(aes(fill = n.overlaps), alpha = .8) + #, color = "grey"
+      # scale_y_continuous(limits = c(-.5, 2)) +
+      # scale_x_continuous(limits = c(-.5, 1)) +
+      scale_fill_manual(values = c("grey", "red", colors(distinct = TRUE) %>% tail(20))) +
+      theme_minimal()
+  } else {
+    plot_overlaps = NULL
+  }
+  
+  list_output = list(DF_overlaps = DF_overlaps, plot_overlaps = plot_overlaps)
+  
+  return(list_output)
 }
