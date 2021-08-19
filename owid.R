@@ -2,6 +2,7 @@
 
 # TODO: parametrize check_diffs()
 # TODO: homogenize parameters of functions (e.g. group_var, group_var_str). Eliminate all "_str"?
+# TODO: automatic main parameters? Ar least sane defaults?
 
 
 # Libraries ---------------------------------------------------------------
@@ -21,10 +22,8 @@ invisible(lapply(list.files("./R", full.names = TRUE, pattern = ".R"), source))
 set.seed(12)
 
 separation_factor = 10 # Separation between group_var_str levels
-
 ratio_reduction_area = 60000
 ratio_reduction_x = 50
-
 height_y = 5 # How much space for each group in the y axis to move around the circles
 
 max_overlaps = 8 # If using labels, how many max overlaps to tolerate
@@ -41,16 +40,6 @@ subtitle_str = NULL
 x_str = "Deaths per million"
 caption_str = "Diameter is cases per million \n Data from https://github.com/owid/covid-19-data \nBy @gorkang"
 size_text = 3
-
-
-# ratio_reduction_area = 10000
-# ratio_reduction_x = 10000
-# height_y = 1
-# title_str = "COVID cases per million by continent"
-# x_str = "Cases per million"
-# caption_str = "Diameter is deaths per million \n Data from https://github.com/owid/covid-19-data"
-
-
 
 
 
