@@ -17,10 +17,12 @@ With the [OWID dataset](https://github.com/owid/covid-19-data/tree/master/public
 
 ```r 
 
+# remotes::install_github("gorkang/linearpackcircles")
+
 # Libraries and functions
 library(readr)
 library(dplyr)
-invisible(lapply(list.files("./R", full.names = TRUE, pattern = ".R"), source))
+library(linearpackcircles)
 
 # Data
 DF = read_csv("https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv") %>% 
