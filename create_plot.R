@@ -1,20 +1,3 @@
-
-# linearpackcircles
-
-<!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-<!-- badges: end -->
-
-The goal of linearpackcircles is to create circle packing visualizations along a linear scale. It uses {[packcircles](https://github.com/mbedward/packcircles)} as a backend.  
-
-
-## Example plot
-
-With the [OWID dataset](https://github.com/owid/covid-19-data/tree/master/public/data) we can create a plot showing how `total_deaths_per_million` changes by `continent` and `location` (i.e. country), using `total_cases_per_million` for the circle diameter. 
-
-
-```r 
-
 # Libraries and functions
 library(readr)
 library(dplyr)
@@ -49,10 +32,3 @@ linearpackcircles(DF,
                              Data from https://github.com/owid/covid-19-data \n
                              By @gorkang",
                   size_text = 3)
-
-```
-
----  
-
-
-![](outputs/final_plot.png)

@@ -1,6 +1,5 @@
 # Creates a packing circles visualization for COVID OWID data
 
-# TODO: parametrize check_diffs()
 # TODO: homogenize parameters of functions (e.g. group_var, group_var_str). Eliminate all "_str"?
 # TODO: automatic main parameters? Ar least sane defaults?
 
@@ -21,7 +20,7 @@ invisible(lapply(list.files("./R", full.names = TRUE, pattern = ".R"), source))
 
 set.seed(12)
 
-separation_factor = 10 # Separation between group_var_str levels
+separation_factor = 15 # Separation between group_var_str levels
 ratio_reduction_area = 60000
 ratio_reduction_x = 50
 height_y = 5 # How much space for each group in the y axis to move around the circles
@@ -70,7 +69,7 @@ DF_polygons = 1:nrow(DF_groups) %>%
 
 # Plot --------------------------------------------------------------------
 
-plot_final = create_plot(DF_polygons, label_circles = TRUE, max_overlaps = max_overlaps, ID_var_str = ID_var_str, group_var_str = group_var_str, separation_factor = separation_factor)
+plot_final = create_plot(DF_polygons, label_circles = TRUE, max_overlaps = max_overlaps, ID_var_str = ID_var_str, group_var_str = group_var_str, separation_factor = separation_factor, ratio_reduction_x = ratio_reduction_x)
 
 final_plot = plot_final +
   labs(title = title_str,
@@ -80,14 +79,14 @@ final_plot = plot_final +
 
 final_plot
 
-ggsave("outputs/final_plot.png", final_plot, width = 20, height = 11, dpi = 300)
+ggsave("outputs/final_plot.png", final_plot, width = 14, height = 10, dpi = 300)
 
 
 
 # CHECKS -------------------------------------------------------------------
 
 # Overlaps
-list_overlaps = 1:nrow(DF_groups) %>% map(~ check_overlaps(DF_polygons%>% filter(get(group_var_str) == DF_groups$group_var[.x]), create_plot = TRUE))
+list_overlaps = 1:nrow(DF_groups) %>% map(~ check_overlaps(DF_polygons%>% filter(get(group_var_str) == DF_groups$group_var[.x]), CHECKS_plots = TRUE))
   
   # Extract DF and plots         
   DF_overlaps = 1:length(list_overlaps) %>% map_df(~list_overlaps[[.x]]$DF_overlaps)
@@ -95,4 +94,6 @@ list_overlaps = 1:nrow(DF_groups) %>% map(~ check_overlaps(DF_polygons%>% filter
 
 
 # Differences in initial location and plot locacion
-check_diffs(ALL_data, DF_polygons %>% filter(get(group_var_str) == DF_groups$group_var[4]), check_var = x_var_str, group_var = group_var_str)
+  DF_DIFFS = 1:nrow(DF_groups) %>% 
+    map(~ check_diffs(ALL_data, DF_polygons %>% filter(get(group_var_str) == DF_groups$group_var[.x]), check_var = x_var_str, group_var = group_var_str, ID_var_str = ID_var_str, ratio_reduction_x = ratio_reduction_x))
+  
