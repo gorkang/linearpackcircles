@@ -94,10 +94,12 @@
 <p>With the <a href="https://github.com/owid/covid-19-data/tree/master/public/data">OWID dataset</a> we can create a plot showing how <code>total_deaths_per_million</code> changes by <code>continent</code> and <code>location</code> (i.e. country), using <code>total_cases_per_million</code> for the circle diameter.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
+<span class="co"># remotes::install_github("gorkang/linearpackcircles")</span>
+
 <span class="co"># Libraries and functions</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"./R"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span>, pattern <span class="op">=</span> <span class="st">".R"</span><span class="op">)</span>, <span class="va">source</span><span class="op">)</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gorkang/linearpackcircles">linearpackcircles</a></span><span class="op">)</span>
 
 <span class="co"># Data</span>
 <span class="va">DF</span> <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
