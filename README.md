@@ -60,3 +60,36 @@ linearpackcircles(DF,
 
 
 ![](man/figures/final_plot.png)
+
+
+## Saving plots
+
+To save the plot you can store the output of `linearpackcircles()` in a variable and use `ggsave()`, or just add a few parameters to `linearpackcircles()`.  
+
+```r
+
+linearpackcircles(DF,
+
+                  # Main variables
+                  ID_var = "location",
+                  group_var = "continent",
+                  area_var = "total_cases_per_million",
+                  x_var = "total_deaths_per_million",
+
+                  # Layout parameters
+                  separation_factor = 30,
+                  ratio_reduction_area = 6000,
+                  ratio_reduction_x = 20,
+                  height_y = 10,
+
+                  # Save plot
+                  save_plot = TRUE,
+                  filename = "test_plot.png",
+                  width = 15,
+                  height = 12,
+                  dpi = 150
+)
+
+# File saved in: test_plot.png 
+
+```
