@@ -133,6 +133,36 @@
 <hr>
 <p><img src="reference/figures/final_plot.png"></p>
 </div>
+<div id="saving-plots" class="section level2">
+<h2 class="hasAnchor">
+<a href="#saving-plots" class="anchor"></a>Saving plots</h2>
+<p>To save the plot you can store the output of <code><a href="reference/linearpackcircles.html">linearpackcircles()</a></code> in a variable and use <code>ggsave()</code>, or just add a few parameters to <code><a href="reference/linearpackcircles.html">linearpackcircles()</a></code>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="fu"><a href="reference/linearpackcircles.html">linearpackcircles</a></span><span class="op">(</span><span class="va">DF</span>,
+
+                  <span class="co"># Main variables</span>
+                  ID_var <span class="op">=</span> <span class="st">"location"</span>,
+                  group_var <span class="op">=</span> <span class="st">"continent"</span>,
+                  area_var <span class="op">=</span> <span class="st">"total_cases_per_million"</span>,
+                  x_var <span class="op">=</span> <span class="st">"total_deaths_per_million"</span>,
+
+                  <span class="co"># Layout parameters</span>
+                  separation_factor <span class="op">=</span> <span class="fl">30</span>,
+                  ratio_reduction_area <span class="op">=</span> <span class="fl">6000</span>,
+                  ratio_reduction_x <span class="op">=</span> <span class="fl">20</span>,
+                  height_y <span class="op">=</span> <span class="fl">10</span>,
+
+                  <span class="co"># Save plot</span>
+                  save_plot <span class="op">=</span> <span class="cn">TRUE</span>,
+                  filename <span class="op">=</span> <span class="st">"test_plot.png"</span>,
+                  width <span class="op">=</span> <span class="fl">15</span>,
+                  height <span class="op">=</span> <span class="fl">12</span>,
+                  dpi <span class="op">=</span> <span class="fl">150</span>
+<span class="op">)</span>
+
+<span class="co"># File saved in: test_plot.png </span></code></pre></div>
+</div>
 </div>
   </div>
 
