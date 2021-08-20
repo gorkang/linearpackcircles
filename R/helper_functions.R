@@ -54,7 +54,7 @@ create_polygons <- function(DF, group_var) {
 
 
 
-check_diffs <- function(ALL_data, DF, check_var, group_var) {
+check_diffs <- function(ALL_data, DF, check_var, ID_var_str, group_var, ratio_reduction_x) {
   
   # DEBUG
   # ALL_data = ALL_data
@@ -62,24 +62,24 @@ check_diffs <- function(ALL_data, DF, check_var, group_var) {
   # check_var = x_var_str
   # group_var = group_var_str
   
-  # Extract continent
-  group_str = DF %>% distinct(!!group_var_str := get(group_var_str)) %>% pull(group_var_str)
+  # Extract group
+  group_str = DF %>% distinct(!!group_var := get(group_var)) %>% pull(group_var)
   
   DFCHECK = 
-    DF %>% group_by(location) %>% sample_n(1) %>% arrange(x) %>% ungroup() %>% 
+    DF %>% group_by(eval(ID_var_str)) %>% sample_n(1) %>% arrange(x) %>% ungroup() %>% 
     mutate(position_check = 1:n(), total_x_plot = x * ratio_reduction_x) %>% 
     rename(x_check = x) %>% 
-    select(position_check, x_check, location, total_x_plot)
+    select(position_check, x_check, eval(ID_var_str), total_x_plot)
   
   DF_output = 
     ALL_data %>% 
     
-    # TODO: SHOULD make sure we are using circles in the same group / level when checking
-    filter(continent %in% group_str) %>% 
+    # TODO: SHOULD make sure we are using circles in the same group / level when checking (?)
+    filter(get(group_var) %in% group_str) %>% 
     
     arrange(x) %>% ungroup() %>% mutate(position_x = 1:n()) %>% # arrange() needed to assign position_x
-    select(x, location, continent, position_x, eval(check_var)) %>% 
-    left_join(DFCHECK, by = "location") %>%
+    select(x, eval(ID_var_str), eval(group_var), position_x, eval(check_var)) %>% 
+    left_join(DFCHECK, by = eval(ID_var_str)) %>%
     mutate(DIFF = position_x - position_check,
            DIFF_n = (total_x_plot - get(check_var)),
            DIFF_pct = ((total_x_plot - get(check_var))/get(check_var)) * 100,
@@ -96,7 +96,7 @@ check_diffs <- function(ALL_data, DF, check_var, group_var) {
               PCT = mean(DIFF_pct),
               PCT_abs = mean(DIFF_abs),
               MAX_PCT_abs = max(DIFF_abs),
-              continent = unique(continent)
+              !!group_var := unique(get(group_var))
     )
   
   list_output = list(DF_output = DF_output, count_output = count_output)
@@ -107,19 +107,19 @@ check_diffs <- function(ALL_data, DF, check_var, group_var) {
 
 
 # Return x axis labels to original values (we use ratio_reduction_x above to be able to perform calculations)
-mult_format <- function() {
+mult_format <- function(ratio_reduction_x) {
   function(x) format(ratio_reduction_x * x, digits = 2) %>% as.numeric() %>% scales::comma()
 }
 
 
-create_plot <- function(DF, label_circles = FALSE, max_overlaps = 5, ID_var_str, group_var_str, separation_factor = 5) {
+create_plot <- function(DF, label_circles = FALSE, max_overlaps = 5, ID_var_str, group_var_str, separation_factor = 5, size_text = 3, ratio_reduction_x) {
 
   # DEBUG  
   # DF = DF_polygons
   # label_circles = TRUE
   # max_overlaps = 5
   # group_var_str = group_var_str 
-  # separation_factor = 5
+  # separation_factor = 1
   
   # Separate circles by group_var_str ---------------------------------------
 
@@ -135,7 +135,12 @@ create_plot <- function(DF, label_circles = FALSE, max_overlaps = 5, ID_var_str,
   position_y = DF %>% group_by(!!group_var_str := get(group_var_str)) %>% summarise(positions = median(y)) %>% arrange(positions)
   
   # Position of circle labels
-  label_positions = DF %>% group_by(id)  %>% filter(y == median(y)) %>% filter(x == median(x)) %>% sample_n(1)
+  label_positions_temp = DF %>% group_by(id) %>% filter(y == median(y)) %>% filter(x == median(x))
+  if (nrow(label_positions_temp) > 0) {
+    label_positions = label_positions_temp %>% sample_n(1)
+  } else {
+    label_positions = DF %>% group_by(id) %>% filter(y == max(y)) %>% filter(x == max(x)) %>% sample_n(1)
+  }
   
   # Main plot
   plot1 = 
@@ -144,7 +149,7 @@ create_plot <- function(DF, label_circles = FALSE, max_overlaps = 5, ID_var_str,
     coord_equal() +
     labs(x = "", y = "") +
     theme_minimal(base_size = 16) +
-    scale_x_continuous(labels = mult_format(), n.breaks = 10, expand = expansion(mult = c(.02, .01)))  +
+    scale_x_continuous(labels = mult_format(ratio_reduction_x), n.breaks = 10, expand = expansion(mult = c(.02, .01)))  +
     theme(plot.background = element_rect(fill = 'white', colour = 'white')) +
     scale_y_continuous(breaks = unique(position_y$positions), labels = DF_factors[,1])
   
@@ -177,9 +182,14 @@ create_plot <- function(DF, label_circles = FALSE, max_overlaps = 5, ID_var_str,
 
 
 
-check_overlaps <- function(DF_polygons, create_plot = FALSE) {
+check_overlaps <- function(DF_polygons, CHECKS_plots = FALSE) {
   
-  library(sf)
+  # DEBUG
+  # DF_polygons = DF_polygons %>% filter(get(group_var_str) == DF_groups$group_var[.x])
+  # CHECKS_plots = CHECKS_plots
+  
+  
+  suppressPackageStartupMessages(library(sf))
   
   shape_areas <- DF_polygons %>% 
     st_as_sf(coords = c("x", "y")) %>%
@@ -197,13 +207,11 @@ check_overlaps <- function(DF_polygons, create_plot = FALSE) {
   # st_drop_geometry()
   
   
-  # Outputs -----------------------------------------------------------------
-  
   DF_overlaps = intersect_pct %>% filter(n.overlaps > 1) %>% 
     dplyr::select(id, area, intersect_area, n.overlaps) %>%  # only select columns needed to merge
     st_drop_geometry()
   
-  if (create_plot == TRUE & nrow(DF_overlaps) > 0) {
+  if (CHECKS_plots == TRUE & nrow(DF_overlaps) > 0) {
     
     plot_overlaps = intersect_pct %>% 
       mutate(n.overlaps = as.factor(n.overlaps)) %>% 
