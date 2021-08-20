@@ -26,6 +26,7 @@
 #' @importFrom purrr map map_df
 #' @importFrom magrittr %>%
 #' @importFrom crayon red
+#' @importFrom rlang set_names
 #'
 #' @examples
 linearpackcircles <- function(DF,
@@ -99,9 +100,18 @@ linearpackcircles <- function(DF,
 
   if (save_plot == TRUE) {
 
-    if (!exists("filename")) cat(crayon::red("\nWill need a filename for the plot!\n"))
-    # ggsave(filename = "outputs/final_plot_improved.png", plot = final_plot, width = 20, height = 11, dpi = 300)
-    ggsave(plot = final_plot, ...)
+    # Check if we have a filename in the `...`
+    dots <- list(...)
+    parameters_dots = set_names(dots, names(dots))
+
+    if (is.null(parameters_dots$filename)) {
+      cat(crayon::red("\nWill need add a `filename` parameter to save the plot. For example: `filename = myplot.png`\n\n"))
+    } else {
+      cat("\nFile saved in:", parameters_dots$filename, "\n")
+      ggsave(plot = final_plot, ...)
+    }
+
+
   }
 
 
