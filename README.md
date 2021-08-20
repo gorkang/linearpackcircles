@@ -7,6 +7,8 @@
 
 The goal of linearpackcircles is to create circle packing visualizations along a linear scale. It uses {[packcircles](https://github.com/mbedward/packcircles)} as a backend.  
 
+You can install the development version with `remotes::install_github("gorkang/linearpackcircles")`. Please report any problems you find in the [Issues Github page](https://github.com/gorkang/linearpackcircles/issues).  
+
 
 ## Example plot
 
@@ -55,4 +57,4 @@ linearpackcircles(DF,
 ---  
 
 
-![](outputs/final_plot.png)
+![](man/figures/final_plot.png)

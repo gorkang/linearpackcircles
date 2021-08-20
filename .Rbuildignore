@@ -1,1 +1,16 @@
 ^LICENSE\.md$
+^README.html$
+^linearpackcircles\.Rproj$
+^\.Rproj\.user$
+^dev$
+cran-comments.md
+^cran-comments\.md$
+^CRAN-RELEASE$
+^codecov\.yml$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^doc$
+^www$
+
+^\.github$
