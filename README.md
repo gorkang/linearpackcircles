@@ -16,12 +16,12 @@ With the [OWID dataset](https://github.com/owid/covid-19-data/tree/master/public
 
 
 ```r 
-
 # remotes::install_github("gorkang/linearpackcircles")
 
 # Libraries and functions
 library(readr)
 library(dplyr)
+library(ggplot2)
 library(linearpackcircles)
 
 
@@ -43,15 +43,15 @@ plot1 = linearpackcircles(DF,
 
                   label_circles = TRUE,
                   max_overlaps = 8,
-                  size_text = 2,
-
-                  highlight_ID = c("Spain", "Canada"))
+                  size_text = 2)
 
 # Add title, caption...
 plot1 +
   labs(title = "COVID deaths per million",
        x = "Deaths per million",
-       caption = "Diameter is cases per million \n Data from https://github.com/owid/covid-19-data \nBy @gorkang")
+       caption = "Diameter is cases per million \n 
+       Data from https://github.com/owid/covid-19-data \n
+       By @gorkang")
 
 
 ```

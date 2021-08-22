@@ -21,13 +21,46 @@ suppressPackageStartupMessages(library(dplyr))
 library(ggplot2)
 library(linearpackcircles)
 
-```
-
-```{r createplot, fig.height=12, fig.width=15}
-
 # Data
 DF = read_csv("https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv", show_col_types = FALSE) %>%
   filter(date == max(date)) # Keep only most recent data
+
+```
+
+## Simple visualization
+
+```{r createplot, fig.height=12, fig.width=20}
+
+
+# Create Plot
+plot1 = linearpackcircles(DF,
+
+                  ID_var = "location",
+                  group_var = "continent",
+                  area_var = "total_cases_per_million",
+                  x_var = "total_deaths_per_million",
+
+                  separation_factor = 200, # Separation between groups (i.e. continents)
+                  width_plot = 2000, # width "units"
+                  height_group = 100, # height within each group
+
+                  label_circles = TRUE,
+                  max_overlaps = 8,
+                  size_text = 2)
+
+# Add title, caption...
+plot1 +
+  labs(title = "COVID deaths per million",
+       x = "Deaths per million",
+       caption = "Diameter is cases per million \n Data from https://github.com/owid/covid-19-data \nBy @gorkang")
+
+```
+
+## Highlight
+
+You can highlight any number of elements (i.e. counties). 
+
+```{r highlightplot, fig.height=10, fig.width=18}
 
 # Create Plot
 plot1 = linearpackcircles(DF,
@@ -45,7 +78,7 @@ plot1 = linearpackcircles(DF,
                   max_overlaps = 8,
                   size_text = 2,
 
-                  highlight_ID = c("Spain", "Canada"))
+                  highlight_ID = c("Canada", "Chile", "Spain"))
 
 # Add title, caption...
 plot1 +
@@ -54,4 +87,3 @@ plot1 +
        caption = "Diameter is cases per million \n Data from https://github.com/owid/covid-19-data \nBy @gorkang")
 
 ```
-

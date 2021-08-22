@@ -4,32 +4,25 @@
 \alias{check_diffs}
 \title{check_diffs}
 \usage{
-check_diffs(
-  DF_prepared,
-  DF,
-  check_var,
-  ID_var,
-  group_var,
-  area_var,
-  x_var,
-  width_plot
-)
+check_diffs(DF_prepared, DF, ID_var, group_var, area_var, x_var, width_plot)
 }
 \arguments{
-\item{DF}{data2}
+\item{DF_prepared}{output of prepare_data()}
 
-\item{check_var}{x variable}
+\item{DF}{output of create_polygons()}
 
 \item{ID_var}{ID variable}
 
 \item{group_var}{group variable}
 
-\item{ALL_data}{data1}
+\item{area_var}{area variable}
 
-\item{ratio_reduction_x}{ratio_reduction_x}
+\item{x_var}{x axis variable}
+
+\item{width_plot}{reduce x for plotting by this ratio}
 }
 \value{
-
+list
 }
 \description{
 check_diffs

@@ -95,6 +95,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/checking.html">Check transformation and overlaps</a>
+    </li>
+    <li>
       <a href="../articles/create_plot.html">Create a linear packing circles plot</a>
     </li>
   </ul>
@@ -151,8 +154,12 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>DF_prepared</th>
+      <td><p>output of prepare_data()</p></td>
+    </tr>
+    <tr>
       <th>DF</th>
-      <td><p>input dataframe</p></td>
+      <td><p>output of create_polygons()</p></td>
     </tr>
     <tr>
       <th>ID_var</th>
@@ -163,8 +170,20 @@
       <td><p>group variable</p></td>
     </tr>
     <tr>
+      <th>area_var</th>
+      <td><p>area variable</p></td>
+    </tr>
+    <tr>
+      <th>x_var</th>
+      <td><p>x axis variable</p></td>
+    </tr>
+    <tr>
       <th>separation_factor</th>
       <td><p>how much separation between groups</p></td>
+    </tr>
+    <tr>
+      <th>width_plot</th>
+      <td><p>reduce x for plotting by this ratio</p></td>
     </tr>
     <tr>
       <th>label_circles</th>
@@ -179,8 +198,8 @@
       <td><p>size text labels</p></td>
     </tr>
     <tr>
-      <th>ratio_reduction_x</th>
-      <td><p>reduce x for plotting by this ratio</p></td>
+      <th>highlight_ID</th>
+      <td><p>ID's to highlight in plot</p></td>
     </tr>
     </table>
 

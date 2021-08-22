@@ -12,7 +12,7 @@ create_polygons(DF, group_var)
 \item{group_var}{group variable}
 }
 \value{
-
+DF
 }
 \description{
 create_polygons

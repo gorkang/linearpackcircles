@@ -13,9 +13,8 @@
 #' @param size_text size text labels
 #' @param highlight_ID Which ID's to highlight
 #' @param random_seed random seed to use
-
 #'
-#' @return
+#' @return ggplot object
 #' @export
 #' @importFrom dplyr all_of distinct filter mutate pull select
 #' @importFrom ggplot2 labs ggsave

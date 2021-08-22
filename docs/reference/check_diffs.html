@@ -95,6 +95,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/checking.html">Check transformation and overlaps</a>
+    </li>
+    <li>
       <a href="../articles/create_plot.html">Create a linear packing circles plot</a>
     </li>
   </ul>
@@ -132,27 +135,18 @@
     <p>check_diffs</p>
     </div>
 
-    <pre class="usage"><span class='fu'>check_diffs</span><span class='op'>(</span>
-  <span class='va'>DF_prepared</span>,
-  <span class='va'>DF</span>,
-  <span class='va'>check_var</span>,
-  <span class='va'>ID_var</span>,
-  <span class='va'>group_var</span>,
-  <span class='va'>area_var</span>,
-  <span class='va'>x_var</span>,
-  <span class='va'>width_plot</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>check_diffs</span><span class='op'>(</span><span class='va'>DF_prepared</span>, <span class='va'>DF</span>, <span class='va'>ID_var</span>, <span class='va'>group_var</span>, <span class='va'>area_var</span>, <span class='va'>x_var</span>, <span class='va'>width_plot</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>DF</th>
-      <td><p>data2</p></td>
+      <th>DF_prepared</th>
+      <td><p>output of prepare_data()</p></td>
     </tr>
     <tr>
-      <th>check_var</th>
-      <td><p>x variable</p></td>
+      <th>DF</th>
+      <td><p>output of create_polygons()</p></td>
     </tr>
     <tr>
       <th>ID_var</th>
@@ -163,12 +157,16 @@
       <td><p>group variable</p></td>
     </tr>
     <tr>
-      <th>ALL_data</th>
-      <td><p>data1</p></td>
+      <th>area_var</th>
+      <td><p>area variable</p></td>
     </tr>
     <tr>
-      <th>ratio_reduction_x</th>
-      <td><p>ratio_reduction_x</p></td>
+      <th>x_var</th>
+      <td><p>x axis variable</p></td>
+    </tr>
+    <tr>
+      <th>width_plot</th>
+      <td><p>reduce x for plotting by this ratio</p></td>
     </tr>
     </table>
 

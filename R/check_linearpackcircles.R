@@ -8,9 +8,10 @@
 #' @param separation_factor how much separation between groups
 #' @param width_plot reduce x for plotting by this ratio
 #' @param height_group height of y axis for each group
+#' @param CHECKS_plots TRUE/FALSE show plot with overlapping areas
 #' @param random_seed random seed to use
 #'
-#' @return
+#' @return list with DF's and a ggplot object
 #' @export
 #' @importFrom dplyr all_of distinct filter mutate pull select
 #' @importFrom ggplot2 labs ggsave
@@ -73,7 +74,7 @@ check_linearpackcircles <- function(DF,
 
     # Differences in initial location and plot locacion
     DF_DIFFS = 1:nrow(DF_groups) %>%
-      map(~ check_diffs(ALL_data, DF_polygons %>% filter(get(group_var) == DF_groups$group_var[.x]), check_var = x_var,
+      map(~ check_diffs(ALL_data, DF_polygons %>% filter(get(group_var) == DF_groups$group_var[.x]),
                         ID_var = ID_var,
                         group_var = group_var,
                         area_var = area_var,

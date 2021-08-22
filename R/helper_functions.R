@@ -8,7 +8,7 @@
 #' @param width_plot reduce x for plotting by this ratio
 #' @param height_group height of y axis for each group
 #'
-#' @return
+#' @return DF
 #' @importFrom ggplot2 ggplot aes element_text geom_tile scale_x_continuous scale_y_continuous scale_fill_gradientn labs margin annotate ggsave
 #' @importFrom dplyr all_of filter mutate pull select
 #' @importFrom tidyr drop_na
@@ -44,7 +44,7 @@ prepare_data <- function(DF, ID_var, group_var, area_var, x_var, width_plot = 10
       ) %>%
     select(x, y, area, all_of(ID_var), all_of(group_var), all_of(area_var), all_of(x_var))
 
-  DF_prepared_data
+  return(DF_prepared_data)
 
 }
 
@@ -55,7 +55,7 @@ prepare_data <- function(DF, ID_var, group_var, area_var, x_var, width_plot = 10
 #' @param DF input dataframe
 #' @param group_var group variable
 #'
-#' @return
+#' @return DF
 #' @importFrom dplyr all_of filter left_join mutate pull select
 #' @importFrom packcircles circleRepelLayout circleLayoutVertices
 #' @importFrom magrittr %>%
@@ -70,7 +70,7 @@ create_polygons <- function(DF, group_var) {
   limits_y = c(min(DF$y, na.rm = TRUE), max(DF$y, na.rm = TRUE))
 
   res <- circleRepelLayout(DF, xlim = limits_x, ylim = limits_y, xysizecols = 1:3, wrap = FALSE)
-  cat("- ", res$niter, "iterations performed\n")
+  #cat("- ", res$niter, "iterations performed\n")
 
   # Get vertex data for the initial layout where sizes are areas
   dat.gg.initial <- circleLayoutVertices(DF, sizetype = "area")
@@ -84,7 +84,7 @@ create_polygons <- function(DF, group_var) {
   DF_output = dat.gg.final %>% left_join(DF %>% mutate(id = 1:n()) %>% select(id, all_of(names_DF)), by = "id") %>%
     mutate(id = paste0(id, "_", get(group_var)))
 
-  DF_output
+  return(DF_output)
 
 }
 
@@ -93,9 +93,10 @@ create_polygons <- function(DF, group_var) {
 #' mult_format
 #' Return x axis labels to original values (we use ratio_reduction_x above to be able to perform calculations)
 #'
+#' @param ratio_reduction_x automatically calculated parameter
 #' @param width_plot reduce x for plotting by this ratio
 #'
-#' @return
+#' @return function
 #' @importFrom scales comma
 #'
 #' @examples
@@ -109,16 +110,20 @@ mult_format <- function(ratio_reduction_x, width_plot) {
 
 #' create_plot
 #'
-#' @param DF input dataframe
-#' @param label_circles Should we draw labels for the circles
-#' @param max_overlaps overlaps in geom_text_repel
+#' @param DF_prepared output of prepare_data()
+#' @param DF output of create_polygons()
 #' @param ID_var ID variable
 #' @param group_var group variable
+#' @param area_var area variable
+#' @param x_var x axis variable
 #' @param separation_factor how much separation between groups
+#' @param width_plot reduce x for plotting by this ratio
+#' @param label_circles Should we draw labels for the circles
+#' @param max_overlaps overlaps in geom_text_repel
 #' @param size_text size text labels
-#' @param ratio_reduction_x reduce x for plotting by this ratio
+#' @param highlight_ID ID's to highlight in plot
 #'
-#' @return
+#' @return ggplot object
 #' @importFrom dplyr case_when distinct filter group_by left_join mutate
 #' @importFrom ggplot2 aes coord_equal element_rect expansion ggplot element_text geom_polygon scale_x_continuous scale_y_continuous scale_fill_gradientn labs margin annotate ggsave theme theme_minimal
 #' @importFrom ggrepel geom_text_repel
@@ -229,6 +234,7 @@ create_plot <- function(DF_prepared, DF,
   } else {
     plot1
   }
+
 }
 
 
@@ -238,18 +244,19 @@ create_plot <- function(DF_prepared, DF,
 
 #' check_diffs
 #'
-#' @param ALL_data data1
-#' @param DF data2
-#' @param check_var x variable
+#' @param DF_prepared output of prepare_data()
+#' @param DF output of create_polygons()
 #' @param ID_var ID variable
 #' @param group_var group variable
-#' @param ratio_reduction_x ratio_reduction_x
+#' @param area_var area variable
+#' @param x_var x axis variable
+#' @param width_plot reduce x for plotting by this ratio
 #'
-#' @return
+#' @return list
 #' @importFrom dplyr arrange all_of distinct everything filter group_by left_join matches mutate n pull rename sample_n select starts_with summarise ungroup
 #'
 #' @examples
-check_diffs <- function(DF_prepared, DF, check_var,
+check_diffs <- function(DF_prepared, DF,
 
                         ID_var, group_var, area_var, x_var,
 
@@ -278,12 +285,12 @@ check_diffs <- function(DF_prepared, DF, check_var,
     filter(get(group_var) %in% group_str) %>%
 
     arrange(x) %>% ungroup() %>% mutate(position_x = 1:n()) %>% # arrange() needed to assign position_x
-    select(x, eval(ID_var), eval(group_var), position_x, eval(check_var)) %>%
+    select(x, eval(ID_var), eval(group_var), position_x, eval(x_var)) %>%
     left_join(DFCHECK, by = eval(ID_var)) %>%
     mutate(DIFF = position_x - position_check,
-           DIFF_n = (total_x_plot - get(check_var)),
-           DIFF_pct = ((total_x_plot - get(check_var))/get(check_var)) * 100,
-           DIFF_abs = ((total_x_plot - get(check_var))/max(get(check_var))) * 100) %>%
+           DIFF_n = (total_x_plot - get(x_var)),
+           DIFF_pct = ((total_x_plot - get(x_var))/get(x_var)) * 100,
+           DIFF_abs = ((total_x_plot - get(x_var))/max(get(x_var))) * 100) %>%
     select(DIFF, matches("position_"), starts_with("x"), everything()) %>%
     arrange(DIFF)
 
@@ -301,17 +308,17 @@ check_diffs <- function(DF_prepared, DF, check_var,
 
   list_output = list(DF_output = DF_output, count_output = count_output)
 
-  list_output
+  return(list_output)
 
 }
 
 
 #' check_overlaps
 #'
-#' @param DF_polygons input dataframe (should be the output of create polygons)
+#' @param DF_polygons input dataframe (should be the output of create_polygons())
 #' @param CHECKS_plots Should we show plots
 #'
-#' @return
+#' @return list
 #' @importFrom utils tail
 #' @importFrom dplyr summarise
 #' @importFrom ggplot2 aes coord_equal element_rect expansion ggplot geom_sf element_text geom_polygon scale_fill_manual scale_x_continuous scale_y_continuous scale_fill_gradientn labs margin annotate ggsave theme theme_minimal
@@ -359,5 +366,6 @@ check_overlaps <- function(DF_polygons, CHECKS_plots = FALSE) {
 
   list_output = list(DF_overlaps = DF_overlaps, plot_overlaps = plot_overlaps)
 
-  list_output
+  return(list_output)
+
 }

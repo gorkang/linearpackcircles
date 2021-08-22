@@ -7,12 +7,12 @@
 check_overlaps(DF_polygons, CHECKS_plots = FALSE)
 }
 \arguments{
-\item{DF_polygons}{input dataframe (should be the output of create polygons)}
+\item{DF_polygons}{input dataframe (should be the output of create_polygons())}
 
 \item{CHECKS_plots}{Should we show plots}
 }
 \value{
-
+list
 }
 \description{
 check_overlaps

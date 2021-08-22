@@ -34,10 +34,12 @@ check_linearpackcircles(
 
 \item{height_group}{height of y axis for each group}
 
+\item{CHECKS_plots}{TRUE/FALSE show plot with overlapping areas}
+
 \item{random_seed}{random seed to use}
 }
 \value{
-
+list with DF's and a ggplot object
 }
 \description{
 check_linearpackcircles

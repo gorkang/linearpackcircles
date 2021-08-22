@@ -8,10 +8,12 @@ Return x axis labels to original values (we use ratio_reduction_x above to be ab
 mult_format(ratio_reduction_x, width_plot)
 }
 \arguments{
+\item{ratio_reduction_x}{automatically calculated parameter}
+
 \item{width_plot}{reduce x for plotting by this ratio}
 }
 \value{
-
+function
 }
 \description{
 mult_format

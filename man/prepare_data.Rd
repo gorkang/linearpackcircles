@@ -30,7 +30,7 @@ prepare_data(
 \item{height_group}{height of y axis for each group}
 }
 \value{
-
+DF
 }
 \description{
 prepare_data

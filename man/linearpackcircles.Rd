@@ -48,7 +48,7 @@ linearpackcircles(
 \item{random_seed}{random seed to use}
 }
 \value{
-
+ggplot object
 }
 \description{
 linearpackcircles

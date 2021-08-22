@@ -9,6 +9,7 @@ LazyData: FALSE
 Depends: R (>= 3.5.0)
 Imports: crayon,
          dplyr,
+         DT,
          ggplot2,
          ggrepel,
          packcircles,

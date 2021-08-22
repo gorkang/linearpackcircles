@@ -20,13 +20,21 @@ create_plot(
 )
 }
 \arguments{
-\item{DF}{input dataframe}
+\item{DF_prepared}{output of prepare_data()}
+
+\item{DF}{output of create_polygons()}
 
 \item{ID_var}{ID variable}
 
 \item{group_var}{group variable}
 
+\item{area_var}{area variable}
+
+\item{x_var}{x axis variable}
+
 \item{separation_factor}{how much separation between groups}
+
+\item{width_plot}{reduce x for plotting by this ratio}
 
 \item{label_circles}{Should we draw labels for the circles}
 
@@ -34,10 +42,10 @@ create_plot(
 
 \item{size_text}{size text labels}
 
-\item{ratio_reduction_x}{reduce x for plotting by this ratio}
+\item{highlight_ID}{ID's to highlight in plot}
 }
 \value{
-
+ggplot object
 }
 \description{
 create_plot
