@@ -4,11 +4,18 @@
 \alias{check_diffs}
 \title{check_diffs}
 \usage{
-check_diffs(ALL_data, DF, check_var, ID_var, group_var, ratio_reduction_x)
+check_diffs(
+  DF_prepared,
+  DF,
+  check_var,
+  ID_var,
+  group_var,
+  area_var,
+  x_var,
+  width_plot
+)
 }
 \arguments{
-\item{ALL_data}{data1}
-
 \item{DF}{data2}
 
 \item{check_var}{x variable}
@@ -16,6 +23,8 @@ check_diffs(ALL_data, DF, check_var, ID_var, group_var, ratio_reduction_x)
 \item{ID_var}{ID variable}
 
 \item{group_var}{group variable}
+
+\item{ALL_data}{data1}
 
 \item{ratio_reduction_x}{ratio_reduction_x}
 }

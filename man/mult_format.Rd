@@ -5,10 +5,10 @@
 \title{mult_format
 Return x axis labels to original values (we use ratio_reduction_x above to be able to perform calculations)}
 \usage{
-mult_format(ratio_reduction_x)
+mult_format(ratio_reduction_x, width_plot)
 }
 \arguments{
-\item{ratio_reduction_x}{reduce x for plotting by this ratio}
+\item{width_plot}{reduce x for plotting by this ratio}
 }
 \value{
 

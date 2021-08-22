@@ -5,28 +5,32 @@
 \title{create_plot}
 \usage{
 create_plot(
+  DF_prepared,
   DF,
-  label_circles = FALSE,
-  max_overlaps = 5,
   ID_var,
   group_var,
+  area_var,
+  x_var,
   separation_factor = 5,
+  width_plot = 100,
+  label_circles = FALSE,
+  max_overlaps = 5,
   size_text = 3,
-  ratio_reduction_x
+  highlight_ID = NULL
 )
 }
 \arguments{
 \item{DF}{input dataframe}
-
-\item{label_circles}{Should we draw labels for the circles}
-
-\item{max_overlaps}{overlaps in geom_text_repel}
 
 \item{ID_var}{ID variable}
 
 \item{group_var}{group variable}
 
 \item{separation_factor}{how much separation between groups}
+
+\item{label_circles}{Should we draw labels for the circles}
+
+\item{max_overlaps}{overlaps in geom_text_repel}
 
 \item{size_text}{size text labels}
 

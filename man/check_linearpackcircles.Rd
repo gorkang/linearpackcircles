@@ -11,20 +11,10 @@ check_linearpackcircles(
   area_var = "area",
   x_var = "x",
   separation_factor = 1,
-  ratio_reduction_area = 600,
-  ratio_reduction_x = 50,
-  height_y = 1,
-  max_overlaps = 8,
-  title_str = "Packing circles visualization",
-  subtitle_str = NULL,
-  x_str = x_var,
-  caption_str = "",
-  size_text = 3,
-  label_circles = TRUE,
-  save_plot = FALSE,
-  CHECKS = TRUE,
+  width_plot = 100,
+  height_group = 10,
   CHECKS_plots = FALSE,
-  ...
+  random_seed = 12
 )
 }
 \arguments{
@@ -40,33 +30,11 @@ check_linearpackcircles(
 
 \item{separation_factor}{how much separation between groups}
 
-\item{ratio_reduction_area}{reduce area for plotting by this ratio}
+\item{width_plot}{reduce x for plotting by this ratio}
 
-\item{ratio_reduction_x}{reduce x for plotting by this ratio}
+\item{height_group}{height of y axis for each group}
 
-\item{height_y}{height of y axis for each group}
-
-\item{max_overlaps}{overlaps in geom_text_repel}
-
-\item{title_str}{title plot}
-
-\item{subtitle_str}{subtitle plot}
-
-\item{x_str}{x axis label plot}
-
-\item{caption_str}{caption plot}
-
-\item{size_text}{size text labels}
-
-\item{label_circles}{Should we draw labels for the circles}
-
-\item{save_plot}{Should we save the plot}
-
-\item{CHECKS}{Should we check}
-
-\item{CHECKS_plots}{Should we show plots}
-
-\item{...}{other arguments}
+\item{random_seed}{random seed to use}
 }
 \value{
 

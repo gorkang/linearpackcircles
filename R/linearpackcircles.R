@@ -6,18 +6,14 @@
 #' @param area_var area variable
 #' @param x_var x axis variable
 #' @param separation_factor how much separation between groups
-#' @param ratio_reduction_area reduce area for plotting by this ratio
-#' @param ratio_reduction_x reduce x for plotting by this ratio
-#' @param height_y height of y axis for each group
-#' @param max_overlaps overlaps in geom_text_repel
-#' @param title_str title plot
-#' @param subtitle_str subtitle plot
-#' @param x_str x axis label plot
-#' @param caption_str caption plot
-#' @param size_text size text labels
+#' @param width_plot reduce x for plotting by this ratio
+#' @param height_group height of y axis for each group
 #' @param label_circles Should we draw labels for the circles
-#' @param save_plot Should we save the plot
-#' @param ... other arguments
+#' @param max_overlaps overlaps in geom_text_repel
+#' @param size_text size text labels
+#' @param highlight_ID Which ID's to highlight
+#' @param random_seed random seed to use
+
 #'
 #' @return
 #' @export
@@ -30,50 +26,47 @@
 #'
 #' @examples
 linearpackcircles <- function(DF,
+
                               ID_var = "ID",
                               group_var = "group",
                               area_var = "area",
                               x_var = "x",
+
                               separation_factor = 1, # Separation between group_var levels
-                              ratio_reduction_area = 600,
-                              ratio_reduction_x = 50,
-                              height_y = 1,
-                              max_overlaps = 8,
-                              title_str = "Packing circles visualization",
-                              subtitle_str = NULL,
-                              x_str = x_var,
-                              caption_str = "",
-                              size_text = 3,
+                              width_plot = 100,
+                              height_group = 10,
+
                               label_circles = TRUE,
-                              save_plot = FALSE,
-                              ...) {
+                              max_overlaps = 8,
+                              size_text = 3,
+
+                              highlight_ID = NULL,
+
+                              random_seed = 12) {
 
 
-  # Libraries ---------------------------------------------------------------
+  # CHECK
 
-  # library(dplyr)
-  # library(ggplot2)
-  # library(packcircles)
-  # library(purrr)
-  # library(readr)
-  # library(tidyr)
-
-  # invisible(lapply(list.files("./R", full.names = TRUE, pattern = ".R"), source))
-
-
+  # ID_var = "researcher"
+  # group_var = "affiliation"
+  # area_var = "horas"
+  # x_var = "publicaciones"
+  # separation_factor = 1
+  # width_plot = 10
+  # height_group = 1
+  # random_seed = 12
 
   # Data preparation --------------------------------------------------------
 
-  set.seed(12)
+  set.seed(random_seed)
 
   ALL_data = prepare_data(DF,
                           ID_var = ID_var,
                           group_var = group_var,
                           area_var = area_var,
                           x_var = x_var,
-                          ratio_reduction_area = ratio_reduction_area,
-                          ratio_reduction_x = ratio_reduction_x,
-                          height_y = height_y)
+                          width_plot = width_plot,
+                          height_group = height_group)
 
 
 
@@ -88,34 +81,25 @@ linearpackcircles <- function(DF,
 
 
   # Plot --------------------------------------------------------------------
+  # Automatic parameters
 
-  plot_final = create_plot(DF_polygons, label_circles = label_circles, max_overlaps = max_overlaps, ID_var = ID_var, group_var = group_var, separation_factor = separation_factor, ratio_reduction_x = ratio_reduction_x)
+  final_plot = create_plot(DF_prepared = ALL_data, DF = DF_polygons,
 
-  final_plot = plot_final +
-    labs(title = title_str,
-         subtitle = subtitle_str,
-         x = x_str,
-         caption = caption_str,
-         ...)
+                           ID_var = ID_var,
+                           group_var = group_var,
+                           area_var = area_var,
+                           x_var = x_var,
 
-  if (save_plot == TRUE) {
+                           separation_factor = separation_factor,
+                           width_plot = width_plot,
 
-    # Check if we have a filename in the `...`
-    dots <- list(...)
-    parameters_dots = set_names(dots, names(dots))
+                           label_circles = label_circles,
+                           max_overlaps = max_overlaps,
+                           size_text = size_text,
 
-    if (is.null(parameters_dots$filename)) {
-      cat(crayon::red("\nWill need add a `filename` parameter to save the plot. For example: `filename = myplot.png`\n\n"))
-    } else {
-      cat("\nFile saved in:", parameters_dots$filename, "\n")
-      ggsave(plot = final_plot, ...)
-    }
+                           highlight_ID = highlight_ID)
 
 
-  }
-
-
-  return(final_plot)
-
+  final_plot
 
 }

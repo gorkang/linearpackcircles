@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 # Load libraries
 library(readr)
 suppressPackageStartupMessages(library(dplyr))
+library(ggplot2)
 library(linearpackcircles)
 
 ```
@@ -28,31 +29,29 @@ library(linearpackcircles)
 DF = read_csv("https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv", show_col_types = FALSE) %>%
   filter(date == max(date)) # Keep only most recent data
 
-# Plot
-linearpackcircles(DF,
+# Create Plot
+plot1 = linearpackcircles(DF,
 
-                  # Main variables
                   ID_var = "location",
                   group_var = "continent",
                   area_var = "total_cases_per_million",
                   x_var = "total_deaths_per_million",
 
-                  # Layout parameters
-                  separation_factor = 15,
-                  ratio_reduction_area = 60000,
-                  ratio_reduction_x = 50,
-                  height_y = 5,
+                  separation_factor = 200,
+                  width_plot = 2000,
+                  height_group = 100,
 
-                  # Text labels
+                  label_circles = TRUE,
                   max_overlaps = 8,
+                  size_text = 2,
 
-                  # Plot parameters
-                  title = "COVID deaths per million",
-                  x = "Deaths per million",
-                  caption = "Diameter is cases per million \n
-                             Data from https://github.com/owid/covid-19-data \n
-                             By @gorkang",
-                  size_text = 3)
+                  highlight_ID = c("Spain", "Canada"))
+
+# Add title, caption...
+plot1 +
+  labs(title = "COVID deaths per million",
+       x = "Deaths per million",
+       caption = "Diameter is cases per million \n Data from https://github.com/owid/covid-19-data \nBy @gorkang")
 
 ```
 

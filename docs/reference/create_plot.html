@@ -133,14 +133,18 @@
     </div>
 
     <pre class="usage"><span class='fu'>create_plot</span><span class='op'>(</span>
+  <span class='va'>DF_prepared</span>,
   <span class='va'>DF</span>,
-  label_circles <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  max_overlaps <span class='op'>=</span> <span class='fl'>5</span>,
   <span class='va'>ID_var</span>,
   <span class='va'>group_var</span>,
+  <span class='va'>area_var</span>,
+  <span class='va'>x_var</span>,
   separation_factor <span class='op'>=</span> <span class='fl'>5</span>,
+  width_plot <span class='op'>=</span> <span class='fl'>100</span>,
+  label_circles <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  max_overlaps <span class='op'>=</span> <span class='fl'>5</span>,
   size_text <span class='op'>=</span> <span class='fl'>3</span>,
-  <span class='va'>ratio_reduction_x</span>
+  highlight_ID <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -149,14 +153,6 @@
     <tr>
       <th>DF</th>
       <td><p>input dataframe</p></td>
-    </tr>
-    <tr>
-      <th>label_circles</th>
-      <td><p>Should we draw labels for the circles</p></td>
-    </tr>
-    <tr>
-      <th>max_overlaps</th>
-      <td><p>overlaps in geom_text_repel</p></td>
     </tr>
     <tr>
       <th>ID_var</th>
@@ -169,6 +165,14 @@
     <tr>
       <th>separation_factor</th>
       <td><p>how much separation between groups</p></td>
+    </tr>
+    <tr>
+      <th>label_circles</th>
+      <td><p>Should we draw labels for the circles</p></td>
+    </tr>
+    <tr>
+      <th>max_overlaps</th>
+      <td><p>overlaps in geom_text_repel</p></td>
     </tr>
     <tr>
       <th>size_text</th>

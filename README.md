@@ -24,35 +24,35 @@ library(readr)
 library(dplyr)
 library(linearpackcircles)
 
+
 # Data
-DF = read_csv("https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv") %>% 
+DF = read_csv("https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv", show_col_types = FALSE) %>%
   filter(date == max(date)) # Keep only most recent data
 
-# Plot
-linearpackcircles(DF, 
-                  
-                  # Main variables
-                  ID_var_str = "location",
-                  group_var_str = "continent",
-                  area_var_str = "total_cases_per_million",
-                  x_var_str = "total_deaths_per_million",
-                  
-                  # Layout parameters
-                  separation_factor = 15,
-                  ratio_reduction_area = 60000,
-                  ratio_reduction_x = 50,
-                  height_y = 5,
-                  
-                  # Text labels
+# Create Plot
+plot1 = linearpackcircles(DF,
+
+                  ID_var = "location",
+                  group_var = "continent",
+                  area_var = "total_cases_per_million",
+                  x_var = "total_deaths_per_million",
+
+                  separation_factor = 200,
+                  width_plot = 2000,
+                  height_group = 100,
+
+                  label_circles = TRUE,
                   max_overlaps = 8,
-                  
-                  # Plot parameters
-                  title = "COVID deaths per million",
-                  x = "Deaths per million",
-                  caption = "Diameter is cases per million \n 
-                             Data from https://github.com/owid/covid-19-data \n
-                             By @gorkang",
-                  size_text = 3)
+                  size_text = 2,
+
+                  highlight_ID = c("Spain", "Canada"))
+
+# Add title, caption...
+plot1 +
+  labs(title = "COVID deaths per million",
+       x = "Deaths per million",
+       caption = "Diameter is cases per million \n Data from https://github.com/owid/covid-19-data \nBy @gorkang")
+
 
 ```
 
@@ -60,36 +60,3 @@ linearpackcircles(DF,
 
 
 ![](man/figures/final_plot.png)
-
-
-## Saving plots
-
-To save the plot you can store the output of `linearpackcircles()` in a variable and use `ggsave()`, or just add a few parameters to `linearpackcircles()`.  
-
-```r
-
-linearpackcircles(DF,
-
-                  # Main variables
-                  ID_var = "location",
-                  group_var = "continent",
-                  area_var = "total_cases_per_million",
-                  x_var = "total_deaths_per_million",
-
-                  # Layout parameters
-                  separation_factor = 30,
-                  ratio_reduction_area = 6000,
-                  ratio_reduction_x = 20,
-                  height_y = 10,
-
-                  # Save plot
-                  save_plot = TRUE,
-                  filename = "test_plot.png",
-                  width = 15,
-                  height = 12,
-                  dpi = 150
-)
-
-# File saved in: test_plot.png 
-
-```

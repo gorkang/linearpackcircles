@@ -10,9 +10,8 @@ prepare_data(
   group_var,
   area_var,
   x_var,
-  ratio_reduction_area,
-  ratio_reduction_x,
-  height_y
+  width_plot = 100,
+  height_group = 10
 )
 }
 \arguments{
@@ -26,11 +25,9 @@ prepare_data(
 
 \item{x_var}{x axis variable}
 
-\item{ratio_reduction_area}{reduce area for plotting by this ratio}
+\item{width_plot}{reduce x for plotting by this ratio}
 
-\item{ratio_reduction_x}{reduce x for plotting by this ratio}
-
-\item{height_y}{height of y axis for each group}
+\item{height_group}{height of y axis for each group}
 }
 \value{
 
