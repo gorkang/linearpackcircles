@@ -132,15 +132,20 @@
     <p>check_diffs</p>
     </div>
 
-    <pre class="usage"><span class='fu'>check_diffs</span><span class='op'>(</span><span class='va'>ALL_data</span>, <span class='va'>DF</span>, <span class='va'>check_var</span>, <span class='va'>ID_var</span>, <span class='va'>group_var</span>, <span class='va'>ratio_reduction_x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>check_diffs</span><span class='op'>(</span>
+  <span class='va'>DF_prepared</span>,
+  <span class='va'>DF</span>,
+  <span class='va'>check_var</span>,
+  <span class='va'>ID_var</span>,
+  <span class='va'>group_var</span>,
+  <span class='va'>area_var</span>,
+  <span class='va'>x_var</span>,
+  <span class='va'>width_plot</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>ALL_data</th>
-      <td><p>data1</p></td>
-    </tr>
     <tr>
       <th>DF</th>
       <td><p>data2</p></td>
@@ -156,6 +161,10 @@
     <tr>
       <th>group_var</th>
       <td><p>group variable</p></td>
+    </tr>
+    <tr>
+      <th>ALL_data</th>
+      <td><p>data1</p></td>
     </tr>
     <tr>
       <th>ratio_reduction_x</th>

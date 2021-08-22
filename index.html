@@ -101,67 +101,37 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gorkang/linearpackcircles">linearpackcircles</a></span><span class="op">)</span>
 
+
 <span class="co"># Data</span>
-<span class="va">DF</span> <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<span class="va">DF</span> <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv"</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">date</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="co"># Keep only most recent data</span>
 
-<span class="co"># Plot</span>
-<span class="fu"><a href="reference/linearpackcircles.html">linearpackcircles</a></span><span class="op">(</span><span class="va">DF</span>, 
-                  
-                  <span class="co"># Main variables</span>
-                  ID_var_str <span class="op">=</span> <span class="st">"location"</span>,
-                  group_var_str <span class="op">=</span> <span class="st">"continent"</span>,
-                  area_var_str <span class="op">=</span> <span class="st">"total_cases_per_million"</span>,
-                  x_var_str <span class="op">=</span> <span class="st">"total_deaths_per_million"</span>,
-                  
-                  <span class="co"># Layout parameters</span>
-                  separation_factor <span class="op">=</span> <span class="fl">15</span>,
-                  ratio_reduction_area <span class="op">=</span> <span class="fl">60000</span>,
-                  ratio_reduction_x <span class="op">=</span> <span class="fl">50</span>,
-                  height_y <span class="op">=</span> <span class="fl">5</span>,
-                  
-                  <span class="co"># Text labels</span>
-                  max_overlaps <span class="op">=</span> <span class="fl">8</span>,
-                  
-                  <span class="co"># Plot parameters</span>
-                  title <span class="op">=</span> <span class="st">"COVID deaths per million"</span>,
-                  x <span class="op">=</span> <span class="st">"Deaths per million"</span>,
-                  caption <span class="op">=</span> <span class="st">"Diameter is cases per million \n 
-                             Data from https://github.com/owid/covid-19-data \n
-                             By @gorkang"</span>,
-                  size_text <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
-<hr>
-<p><img src="reference/figures/final_plot.png"></p>
-</div>
-<div id="saving-plots" class="section level2">
-<h2 class="hasAnchor">
-<a href="#saving-plots" class="anchor"></a>Saving plots</h2>
-<p>To save the plot you can store the output of <code><a href="reference/linearpackcircles.html">linearpackcircles()</a></code> in a variable and use <code>ggsave()</code>, or just add a few parameters to <code><a href="reference/linearpackcircles.html">linearpackcircles()</a></code>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="reference/linearpackcircles.html">linearpackcircles</a></span><span class="op">(</span><span class="va">DF</span>,
+<span class="co"># Create Plot</span>
+<span class="va">plot1</span> <span class="op">=</span> <span class="fu"><a href="reference/linearpackcircles.html">linearpackcircles</a></span><span class="op">(</span><span class="va">DF</span>,
 
-                  <span class="co"># Main variables</span>
                   ID_var <span class="op">=</span> <span class="st">"location"</span>,
                   group_var <span class="op">=</span> <span class="st">"continent"</span>,
                   area_var <span class="op">=</span> <span class="st">"total_cases_per_million"</span>,
                   x_var <span class="op">=</span> <span class="st">"total_deaths_per_million"</span>,
 
-                  <span class="co"># Layout parameters</span>
-                  separation_factor <span class="op">=</span> <span class="fl">30</span>,
-                  ratio_reduction_area <span class="op">=</span> <span class="fl">6000</span>,
-                  ratio_reduction_x <span class="op">=</span> <span class="fl">20</span>,
-                  height_y <span class="op">=</span> <span class="fl">10</span>,
+                  separation_factor <span class="op">=</span> <span class="fl">200</span>,
+                  width_plot <span class="op">=</span> <span class="fl">2000</span>,
+                  height_group <span class="op">=</span> <span class="fl">100</span>,
 
-                  <span class="co"># Save plot</span>
-                  save_plot <span class="op">=</span> <span class="cn">TRUE</span>,
-                  filename <span class="op">=</span> <span class="st">"test_plot.png"</span>,
-                  width <span class="op">=</span> <span class="fl">15</span>,
-                  height <span class="op">=</span> <span class="fl">12</span>,
-                  dpi <span class="op">=</span> <span class="fl">150</span>
-<span class="op">)</span>
+                  label_circles <span class="op">=</span> <span class="cn">TRUE</span>,
+                  max_overlaps <span class="op">=</span> <span class="fl">8</span>,
+                  size_text <span class="op">=</span> <span class="fl">2</span>,
 
-<span class="co"># File saved in: test_plot.png </span></code></pre></div>
+                  highlight_ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Spain"</span>, <span class="st">"Canada"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co"># Add title, caption...</span>
+<span class="va">plot1</span> <span class="op">+</span>
+  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"COVID deaths per million"</span>,
+       x <span class="op">=</span> <span class="st">"Deaths per million"</span>,
+       caption <span class="op">=</span> <span class="st">"Diameter is cases per million \n Data from https://github.com/owid/covid-19-data \nBy @gorkang"</span><span class="op">)</span>
+</code></pre></div>
+<hr>
+<p><img src="reference/figures/final_plot.png"></p>
 </div>
 </div>
   </div>
