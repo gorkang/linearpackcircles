@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">linearpackcircles</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -67,7 +63,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/gorkang/linearpackcircles/">
+  <a href="https://github.com/gorkang/linearpackcircles/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -84,30 +80,30 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="linearpackcircles" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#linearpackcircles" class="anchor"></a>linearpackcircles</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="linearpackcircles">linearpackcircles<a class="anchor" aria-label="anchor" href="#linearpackcircles"></a>
+</h1></div>
 <!-- badges: start -->
 
-<p>The goal of linearpackcircles is to create circle packing visualizations along a linear scale. It uses {<a href="https://github.com/mbedward/packcircles">packcircles</a>} as a backend.</p>
-<p>You can install the development version with <code><a href="https://remotes.r-lib.org/reference/install_github.html">remotes::install_github("gorkang/linearpackcircles")</a></code>. Please report any problems you find in the <a href="https://github.com/gorkang/linearpackcircles/issues">Issues Github page</a>.</p>
-<div id="example-plot" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-plot" class="anchor"></a>Example plot</h2>
-<p>With the <a href="https://github.com/owid/covid-19-data/tree/master/public/data">OWID dataset</a> we can create a plot showing how <code>total_deaths_per_million</code> changes by <code>continent</code> and <code>location</code> (i.e. country), using <code>total_cases_per_million</code> for the circle diameter.</p>
+<p>The goal of linearpackcircles is to create circle packing visualizations along a linear scale. It uses {<a href="https://github.com/mbedward/packcircles" class="external-link">packcircles</a>} as a backend.</p>
+<p>You can install the development version with <code>remotes::install_github("gorkang/linearpackcircles")</code>. Please report any problems you find in the <a href="https://github.com/gorkang/linearpackcircles/issues" class="external-link">Issues Github page</a>.</p>
+<div class="section level2">
+<h2 id="example-plot">Example plot<a class="anchor" aria-label="anchor" href="#example-plot"></a>
+</h2>
+<p>With the <a href="https://github.com/owid/covid-19-data/tree/master/public/data" class="external-link">OWID dataset</a> we can create a plot showing how <code>total_deaths_per_million</code> changes by <code>continent</code> and <code>location</code> (i.e. country), using <code>total_cases_per_million</code> for the circle diameter.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># remotes::install_github("gorkang/linearpackcircles")</span>
 
 <span class="co"># Libraries and functions</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gorkang/linearpackcircles">linearpackcircles</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org" class="external-link">readr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gorkang/linearpackcircles" class="external-link">linearpackcircles</a></span><span class="op">)</span>
 
 
 <span class="co"># Data</span>
-<span class="va">DF</span> <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv"</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">date</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="co"># Keep only most recent data</span>
+<span class="va">DF</span> <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv"</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">date</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="co"># Keep only most recent data</span>
 
 <span class="co"># Create Plot</span>
 <span class="va">plot1</span> <span class="op">=</span> <span class="fu"><a href="reference/linearpackcircles.html">linearpackcircles</a></span><span class="op">(</span><span class="va">DF</span>,
@@ -127,7 +123,7 @@
 
 <span class="co"># Add title, caption...</span>
 <span class="va">plot1</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"COVID deaths per million"</span>,
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"COVID deaths per million"</span>,
        x <span class="op">=</span> <span class="st">"Deaths per million"</span>,
        caption <span class="op">=</span> <span class="st">"Diameter is cases per million \n 
        Data from https://github.com/owid/covid-19-data \n
@@ -136,49 +132,66 @@
 <hr>
 <p><img src="reference/figures/final_plot.png"></p>
 </div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>If you get an error when installing <code>sf</code> (one of the depencencies) and you are on Ubuntu, you will need to install <code>libgdal-dev</code>. On some versions: <code>sudo apt install libgdal-dev</code></p>
+<p>Afterwards, on the R console: <code>remotes::install_github("gorkang/linearpackcircles")</code></p>
+</div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/gorkang/linearpackcircles/">https://​github.com/​gorkang/​linearpackcircles/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/gorkang/linearpackcircles/issues">https://​github.com/​gorkang/​linearpackcircles/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Gorka Navarrete <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-7678-8656" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="https://github.com/gorkang/linearpackcircles/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/gorkang/linearpackcircles/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing linearpackcircles</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Gorka Navarrete <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-7678-8656" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Gorka Navarrete.</p>
+  <p></p>
+<p>Developed by Gorka Navarrete.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -186,6 +199,8 @@
 
   
 
+
+  
 
   </body>
 </html>
