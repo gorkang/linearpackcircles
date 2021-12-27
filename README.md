@@ -60,3 +60,10 @@ plot1 +
 
 
 ![](man/figures/final_plot.png)
+
+
+## Installation
+
+If you get an error when installing `sf` (one of the depencencies) and you are on Ubuntu, you will need to install `libgdal-dev`. On some versions: `sudo apt install libgdal-dev`
+
+Afterwards, on the R console: `remotes::install_github("gorkang/linearpackcircles")`
