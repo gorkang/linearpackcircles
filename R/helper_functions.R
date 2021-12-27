@@ -64,10 +64,13 @@ prepare_data <- function(DF, ID_var, group_var, area_var, x_var, width_plot = 10
 create_polygons <- function(DF, group_var) {
 
   # DEBUG
-  # DF = ALL_data %>% filter(get(group_var) == DF_groups$group_var[1])
+  # DF = ALL_data %>% filter(get(group_var) == DF_groups$group_var[2])
 
   limits_x = c(min(DF$x, na.rm = TRUE), max(DF$x, na.rm = TRUE))
   limits_y = c(min(DF$y, na.rm = TRUE), max(DF$y, na.rm = TRUE))
+
+  if (limits_x[1] == limits_x[2]) stop(" - There is only ", nrow(DF), " element in the group ", DF %>% pull(group_var), ". x max and min values are identical.")
+  if (limits_y[1] == limits_y[2]) stop(" - There is only ", nrow(DF), " element in the group ", DF %>% pull(group_var), ". y max and min values are identical.")
 
   res <- circleRepelLayout(DF, xlim = limits_x, ylim = limits_y, xysizecols = 1:3, wrap = FALSE)
   #cat("- ", res$niter, "iterations performed\n")
