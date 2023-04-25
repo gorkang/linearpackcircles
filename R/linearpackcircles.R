@@ -13,6 +13,7 @@
 #' @param size_text size text labels
 #' @param highlight_ID Which ID's to highlight
 #' @param random_seed random seed to use
+#' @param area_multiplier multiply area size by this
 #'
 #' @return ggplot object
 #' @export
@@ -41,10 +42,16 @@ linearpackcircles <- function(DF,
 
                               highlight_ID = NULL,
 
-                              random_seed = 12) {
+                              random_seed = 12,
+
+                              area_multiplier = 1) {
 
 
   # CHECK
+  # ID_var = "office_character"
+  # group_var = "award_type"
+  # area_var = "total_awards"
+  # x_var = "year"
 
   # ID_var = "researcher"
   # group_var = "affiliation"
@@ -54,6 +61,8 @@ linearpackcircles <- function(DF,
   # width_plot = 10
   # height_group = 1
   # random_seed = 12
+  # highlight_ID = NULL
+  # label_circles = FALSE
 
   # Data preparation --------------------------------------------------------
 
@@ -65,7 +74,8 @@ linearpackcircles <- function(DF,
                           area_var = area_var,
                           x_var = x_var,
                           width_plot = width_plot,
-                          height_group = height_group)
+                          height_group = height_group,
+                          area_multiplier = area_multiplier)
 
 
 

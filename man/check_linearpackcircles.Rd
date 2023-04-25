@@ -14,7 +14,8 @@ check_linearpackcircles(
   width_plot = 100,
   height_group = 10,
   CHECKS_plots = FALSE,
-  random_seed = 12
+  random_seed = 12,
+  area_multiplier = 1
 )
 }
 \arguments{

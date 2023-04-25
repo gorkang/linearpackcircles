@@ -7,6 +7,7 @@
 #' @param x_var x axis variable
 #' @param width_plot reduce x for plotting by this ratio
 #' @param height_group height of y axis for each group
+#' @param area_multiplier multiply area size by this
 #'
 #' @return DF
 #' @importFrom ggplot2 ggplot aes element_text geom_tile scale_x_continuous scale_y_continuous scale_fill_gradientn labs margin annotate ggsave
@@ -16,7 +17,7 @@
 #' @importFrom stats median runif
 #'
 #' @examples
-prepare_data <- function(DF, ID_var, group_var, area_var, x_var, width_plot = 100, height_group = 10) {
+prepare_data <- function(DF, ID_var, group_var, area_var, x_var, width_plot = 100, height_group = 10, area_multiplier = 1) {
 
   # Translate input vars to x, group, area. Create y
   DF_prepared_data_raw =
@@ -39,7 +40,8 @@ prepare_data <- function(DF, ID_var, group_var, area_var, x_var, width_plot = 10
   DF_prepared_data =
     DF_prepared_data_raw %>%
     mutate(
-      area = (area/ratio_reduction_area) * width_plot, # This normalizes from 0 to width_plot
+      area = (area/ratio_reduction_area) * area_multiplier, # Control size of area
+      #area = (area/ratio_reduction_area) * width_plot, # This normalizes from 0 to width_plot
       x = (x/ratio_reduction_x) * width_plot # This normalizes from 0 to width_plot
       ) %>%
     select(x, y, area, all_of(ID_var), all_of(group_var), all_of(area_var), all_of(x_var))
@@ -67,10 +69,17 @@ create_polygons <- function(DF, group_var) {
   # DF = ALL_data %>% filter(get(group_var) == DF_groups$group_var[2])
 
   limits_x = c(min(DF$x, na.rm = TRUE), max(DF$x, na.rm = TRUE))
+  # limits_x = c(2000, 2020)
   limits_y = c(min(DF$y, na.rm = TRUE), max(DF$y, na.rm = TRUE))
 
-  if (limits_x[1] == limits_x[2]) stop(" - There is only ", nrow(DF), " element in the group ", DF %>% pull(group_var), ". x max and min values are identical.")
-  if (limits_y[1] == limits_y[2]) stop(" - There is only ", nrow(DF), " element in the group ", DF %>% pull(group_var), ". y max and min values are identical.")
+  if (limits_x[1] == limits_x[2]) {
+    limits_x[1] = limits_x[1] - 1#(limits_x[1]/2)
+    limits_x[2] = limits_x[2] + 1#(limits_x[2]/2)
+    # browser()
+    # stop(" - There is only ", nrow(DF), " elements in the group ", DF %>% pull(group_var), ". x max and min values are identical.")
+    }
+
+  if (limits_y[1] == limits_y[2]) stop(" - There is only ", nrow(DF), " elements in the group ", DF %>% pull(group_var), ". y max and min values are identical.")
 
   res <- circleRepelLayout(DF, xlim = limits_x, ylim = limits_y, xysizecols = 1:3, wrap = FALSE)
   #cat("- ", res$niter, "iterations performed\n")
@@ -199,7 +208,23 @@ create_plot <- function(DF_prepared, DF,
                get(ID_var) %in% highlight_ID ~ "darkred",
                TRUE ~ color_DF))
 
+# browser()
+  # unique_labels = DF |> pull(x_var) |> unique()
+  # unique_breaks_temp = DF |> filter(get(x_var) %in% unique_labels) |> pull(x)
+  # unique_breaks = seq(min(unique_breaks_temp),max(unique_breaks_temp),(max(unique_breaks_temp)-min(unique_breaks_temp))/(10-1))
+  #
+  # if (length(unique_labels) > 10) {
+  #   n = 10
+  #   ideal <- seq(min(unique_labels),max(unique_labels),(max(unique_labels)-min(unique_labels))/(n-1))
+  #   unique_labels <- sapply(ideal, function(x) unique_labels[which.min(abs(unique_labels-x))] )
+  #   unique_breaks_temp = DF |> filter(get(x_var) %in% unique_labels) |> pull(x)
+  #   unique_breaks = seq(min(unique_breaks_temp),max(unique_breaks_temp),(max(unique_breaks_temp)-min(unique_breaks_temp))/(n-1))
+  #
+  # }
 
+
+
+  # browser()
   # Main plot
   plot1 =
     # ggplot(data = DF, aes(x, y, group = id)) +
@@ -210,9 +235,16 @@ create_plot <- function(DF_prepared, DF,
     coord_equal() +
     labs(x = "", y = "") +
     theme_minimal(base_size = 16) +
-    scale_x_continuous(labels = mult_format(ratio_reduction_x, width_plot), n.breaks = 10, expand = expansion(mult = c(.02, .01)))  +
+    scale_x_continuous(
+      labels = mult_format(ratio_reduction_x, width_plot),
+      # labels = unique_labels,
+      # breaks = unique_breaks,
+      n.breaks = 10,
+      expand = expansion(mult = c(.02, .01))
+      )  +
     theme(plot.background = element_rect(fill = 'white', colour = 'white')) +
-    scale_y_continuous(breaks = unique(position_y$positions), labels = DF_factors[,1]) +
+    scale_y_continuous(breaks = unique(position_y$positions),
+                       labels = DF_factors[,1]) +
     ggplot2::scale_colour_identity() +
     ggplot2::scale_fill_identity()
 

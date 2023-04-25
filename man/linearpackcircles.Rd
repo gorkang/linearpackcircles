@@ -17,7 +17,8 @@ linearpackcircles(
   max_overlaps = 8,
   size_text = 3,
   highlight_ID = NULL,
-  random_seed = 12
+  random_seed = 12,
+  area_multiplier = 1
 )
 }
 \arguments{
@@ -46,6 +47,8 @@ linearpackcircles(
 \item{highlight_ID}{Which ID's to highlight}
 
 \item{random_seed}{random seed to use}
+
+\item{area_multiplier}{multiply area size by this}
 }
 \value{
 ggplot object

@@ -34,7 +34,8 @@ check_linearpackcircles <- function(DF,
 
                               CHECKS_plots = FALSE,
 
-                              random_seed = 12) {
+                              random_seed = 12,
+                              area_multiplier = 1) {
 
 
   # Data preparation --------------------------------------------------------
@@ -47,7 +48,8 @@ check_linearpackcircles <- function(DF,
                           area_var = area_var,
                           x_var = x_var,
                           width_plot = width_plot,
-                          height_group = height_group)
+                          height_group = height_group,
+                          area_multiplier = area_multiplier)
 
 
 

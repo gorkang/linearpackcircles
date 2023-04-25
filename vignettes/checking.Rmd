@@ -3,8 +3,10 @@ title: "Check transformation and overlaps"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Check transformation and overlaps}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -17,6 +19,7 @@ knitr::opts_chunk$set(
 ```{r setup}
 # Load libraries
 library(readr)
+library(tidyr)
 suppressPackageStartupMessages(library(dplyr))
 library(DT)
 library(ggplot2)
@@ -24,6 +27,7 @@ library(linearpackcircles)
 
 # Data
 DF = read_csv("https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv", show_col_types = FALSE) %>%
+  drop_na(total_cases_per_million, total_deaths_per_million) %>%
   filter(date == max(date)) # Keep only most recent data
 
 ```
@@ -49,6 +53,7 @@ linearpackcircles(DF %>% filter(continent == "Asia"),
                   label_circles = TRUE,
                   max_overlaps = 8,
                   size_text = 2, 
+                  area_multiplier = 100,
                   
                   highlight_ID = "Armenia") +
   labs(title = "COVID deaths per million",
@@ -76,6 +81,7 @@ linearpackcircles(DF %>% filter(continent == "Asia"),
                   label_circles = TRUE,
                   max_overlaps = 8,
                   size_text = 2,
+                  area_multiplier = 100,
                   
                   highlight_ID = "Armenia") +
   labs(title = "COVID deaths per million",
@@ -100,6 +106,8 @@ CHECKS = check_linearpackcircles(DF %>% filter(continent == "Asia"),
                   separation_factor = 1, # Separation between groups (i.e. continents)
                   width_plot = 50, # width "units"
                   height_group = 10, # height within each group
+                  area_multiplier = 100,
+
                   CHECKS_plots = TRUE # Show overlaps plot
                   ) 
 

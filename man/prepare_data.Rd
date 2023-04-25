@@ -11,7 +11,8 @@ prepare_data(
   area_var,
   x_var,
   width_plot = 100,
-  height_group = 10
+  height_group = 10,
+  area_multiplier = 1
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ prepare_data(
 \item{width_plot}{reduce x for plotting by this ratio}
 
 \item{height_group}{height of y axis for each group}
+
+\item{area_multiplier}{multiply area size by this}
 }
 \value{
 DF

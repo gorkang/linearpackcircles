@@ -21,12 +21,13 @@ With the [OWID dataset](https://github.com/owid/covid-19-data/tree/master/public
 # Libraries and functions
 library(readr)
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 library(linearpackcircles)
 
-
 # Data
 DF = read_csv("https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv", show_col_types = FALSE) %>%
+  drop_na(total_cases_per_million, total_deaths_per_million) %>%
   filter(date == max(date)) # Keep only most recent data
 
 # Create Plot
@@ -43,7 +44,8 @@ plot1 = linearpackcircles(DF,
 
                   label_circles = TRUE,
                   max_overlaps = 8,
-                  size_text = 2)
+                  size_text = 2,
+                  area_multiplier = 1000)
 
 # Add title, caption...
 plot1 +
